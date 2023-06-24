@@ -2,10 +2,12 @@ package com.mindpalace.MP_Backend.dto;
 
 import com.mindpalace.MP_Backend.entity.PostEntity;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 public class PostDTO {
     private Long id;
     private String keyword;
@@ -24,6 +26,14 @@ public class PostDTO {
 //    private String postTitle;
 //    private int postHits;
 
+    public PostDTO(Long id, String backgroundImage, String text, String youtubeUrl, LocalDateTime createdAt) {
+        this.id = id;
+        this.backgroundImage = backgroundImage;
+        this.text = text;
+        this.youtubeUrl = youtubeUrl;
+        this.createdAt = createdAt;
+    }
+
     //Entity -> DTO
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
@@ -32,7 +42,7 @@ public class PostDTO {
         postDTO.setBackgroundImage(postEntity.getBackgroundImage());
         postDTO.setRequestImages(postEntity.getRequestImages());
         postDTO.setText(postEntity.getText());
-        postDTO.setCreatedAt(postEntity.getCreatedTime());
+        postDTO.setCreatedAt(postEntity.getCreatedAt());
         postDTO.setYoutubeUrl(postEntity.getYoutubeUrl());
         return postDTO;
     }

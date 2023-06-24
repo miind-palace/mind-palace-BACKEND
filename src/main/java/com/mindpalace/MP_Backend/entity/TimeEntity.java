@@ -15,5 +15,5 @@ import java.time.LocalDateTime;
 public class TimeEntity { //시간정보 분리, 만들기 쉽게
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 }
