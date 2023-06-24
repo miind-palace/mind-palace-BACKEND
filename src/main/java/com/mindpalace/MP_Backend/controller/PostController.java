@@ -2,6 +2,7 @@ package com.mindpalace.MP_Backend.controller;
 
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.service.PostService;
+import com.mindpalace.MP_Backend.service.CloudinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
 @RequestMapping("/post")
 public class PostController {
     private final PostService postService;
-
+    private final CloudinaryService cloudinaryService;
     //게시글 등록페이지 호출
     @GetMapping("/save")
     public String saveForm(){
@@ -26,7 +28,11 @@ public class PostController {
 
     //게시글 등록
     @PostMapping("/save")
-    public String save(@ModelAttribute PostDTO postDTO){
+    public String save(@ModelAttribute PostDTO postDTO, @RequestParam("file") MultipartFile file){
+        if (!file.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadFile(file);
+            postDTO.setBackgroundImage(imageUrl);
+        }
         System.out.println("postDTO = " + postDTO);
         postService.save(postDTO);
         return "index";
