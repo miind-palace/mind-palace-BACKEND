@@ -2,8 +2,10 @@ package com.mindpalace.MP_Backend.controller;
 
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.service.PostService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +43,11 @@ public class PostController {
 
     //게시글 상세조회
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model){//경로상 있는 값 가져올 땐 pathVariable
+    public String findById(@PathVariable Long id, Model model,
+                           @PageableDefault(page=1) Pageable pageable){//경로상 있는 값 가져올 땐 pathVariable
         PostDTO postDTO = postService.findById(id);
         model.addAttribute("post", postDTO);
+        model.addAttribute("page", pageable.getPageNumber());
         return "post/detail";
     }
 
@@ -52,5 +56,21 @@ public class PostController {
     public String delete(@PathVariable Long id){
         postService.delete(id);
         return "redirect:/post/list";
+    }
+
+    @GetMapping("/paging")
+    public String paging(@PageableDefault(page=1) Pageable pageable, Model model){
+        //pageable.getPageNumber();
+        Page<PostDTO> postList = postService.paging(pageable);
+        int blockLimit = 3; // 밑에 보여지는 페이지 개수
+        //1, 4, 7, 10 ~~
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        //3, 6, 9, 12, <총 페이지가 8개라면 7, 8로 끝나야 함. 삼항연산자 사용
+        int endPage = ((startPage + blockLimit - 1) < postList.getTotalPages()) ? startPage + blockLimit - 1 : postList.getTotalPages();
+
+        model.addAttribute("postList", postList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "post/paging";
     }
 }

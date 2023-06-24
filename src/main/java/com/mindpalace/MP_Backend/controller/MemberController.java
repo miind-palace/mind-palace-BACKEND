@@ -46,7 +46,7 @@ public class MemberController {
     //페이지 출력 요청
     @GetMapping("/member/save")
     public String saveForm() {
-        return "save";
+        return "member/save";
     }
 
     //회원가입 요청

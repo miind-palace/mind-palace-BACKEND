@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="saveReq()">글작성</button>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>backgroundImage</th>
+        <th>text</th>
+        <th>youtubeUrl</th>
+        <th>createdAt</th>
+    </tr>
+    <tr th:each="post: ${postList}">
+        <td th:text="${post.id}"></td>
+        <td><a th:href="@{|/post/${post.id}|(page=${postList.number + 1})}" th:text="${post.backgroundImage}"></a></td>
+        <td th:text="${post.text}"></td>
+        <td th:text="${post.youtubeUrl}"></td>
+        <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+</table>
+<!-- 첫번째 페이지로 이동 -->
+<!-- /post/paging?page=1 -->
+<a th:href="@{/post/paging(page=1)}">First</a>
+<!-- 이전 링크 활성화 비활성화 -->
+<!-- postList.getNumber() 사용자:2페이지 getNumber()=1 어차피 하나 작은 값을 가지고 있으니 이전페이지는 -1 없음-->
+<a th:href="${postList.first} ? '#' : @{/post/paging(page=${postList.number})}">prev</a>
+
+<!-- 페이지 번호 링크(현재 페이지는 숫자만)
+        for(int page=startPage; page<=endPage; page++)-->
+<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+<!-- 현재페이지는 링크 없이 숫자만 클릭 불가능! if unless는 if -else 구문이라 보면 됨-->
+    <span th:if="${page == postList.number + 1}" th:text="${page}"></span>
+    <!-- 현재페이지 번호가 아닌 다른 페이지번호에는 링크를 보여줌 -->
+    <span th:unless="${page == postList.number + 1}">
+        <a th:href="@{/post/paging(page=${page})}" th:text="${page}"></a>
+    </span>
+</span>
+
+<!-- 다음 링크 활성화 비활성화 사용자: 2페이지, getNumber: 1, 3페이지 기본값이 +1이라고 생각해!-->
+<a th:href="${postList.last} ? '#' : @{/post/paging(page=${postList.number + 2})}">next</a>
+<!-- 마지막 페이지로 이동 -->
+<a th:href="@{/post/paging(page=${postList.totalPages})}">Last</a>
+
+</body>
+<script>
+    const saveReq = () => {
+        location.href = "/post/save";
+    }
+</script>
+</html>
