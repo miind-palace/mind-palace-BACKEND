@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>list</title>
+</head>
+<body>
+<table>
+  <tr>
+    <th>id</th>
+    <th>keyword</th>
+    <th>backgroundImage</th>
+    <th>requestImages</th>
+    <th>text</th>
+    <th>createdAt</th>
+    <th>YoutubeURL</th>
+  </tr>
+  <tr th:each="post: ${postList}">
+    <td th:text="${post.id}"></td>
+    <td th:text="${post.keyword}"></td>
+    <td><a th:href="|/post/${post.id}|" th:text="${post.backgroundImage}"></a></td>
+    <td th:text="${post.requestImages}"></td>
+    <td th:text="${post.text}"></td>
+    <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    <td th:text="${post.youtubeUrl}"></td>
+  </tr>
+</table>
+</body>
+</html>
