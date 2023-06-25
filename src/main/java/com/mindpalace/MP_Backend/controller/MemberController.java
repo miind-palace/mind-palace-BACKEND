@@ -1,5 +1,8 @@
 package com.mindpalace.MP_Backend.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+
+import java.time.LocalDateTime;
 
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
@@ -29,8 +34,17 @@ public class MemberController {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
+            Long id = loginResult.getId();
+            MemberDTO memberId = new MemberDTO();
+            memberId.setId(id);
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
-            return "로그인 성공!";
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+            Gson gson = gsonBuilder.setPrettyPrinting().create();
+
+            String json = gson.toJson(memberId);
+            // 로그인 성공
+            return json;
         } else {
             //로그인 실패
             return "로그인 실패";

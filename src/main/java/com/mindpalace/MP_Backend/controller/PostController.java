@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +38,7 @@ public class PostController {
         }
         System.out.println("postDTO = " + postDTO);
         postService.save(postDTO);
-        return "index";
+        return "게시글 업로드 성공!";
     }
 
     //게시글 목록조회
@@ -52,25 +51,32 @@ public class PostController {
         Gson gson = gsonBuilder.setPrettyPrinting().create();
 
         String json = gson.toJson(postDTOList);
-        model.addAttribute("memoryList", json);
-        return "post/list";
+        // model.addAttribute("memoryList", json);
+        return json;
     }
 
     //게시글 상세조회
-    @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model,
+    @GetMapping("/postDetail")
+    public String findById(@RequestParam Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable){//경로상 있는 값 가져올 땐 pathVariable
         PostDTO postDTO = postService.findById(id);
         model.addAttribute("post", postDTO);
         model.addAttribute("page", pageable.getPageNumber());
-        return "post/detail";
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+
+        String json = gson.toJson(postDTO);
+
+        return json;
     }
 
     //게시글 삭제
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
+    @GetMapping("/delete")
+    public String delete(@RequestParam Long id){
         postService.delete(id);
-        return "redirect:/post/list";
+        return "삭제 성공!";
     }
 
     @GetMapping("/paging")
