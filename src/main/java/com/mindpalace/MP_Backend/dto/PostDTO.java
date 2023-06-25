@@ -14,7 +14,7 @@ public class PostDTO {
     private String backgroundImage;
     private String[] requestImages;
     private String text; //board contents.
-    private String youtubeUrl;
+    private String videoId;
 
     //글 작성시간, 글 삭제 시간(필요한가?)
     private LocalDateTime createdAt;
@@ -26,11 +26,11 @@ public class PostDTO {
 //    private String postTitle;
 //    private int postHits;
 
-    public PostDTO(Long id, String backgroundImage, String text, String youtubeUrl, LocalDateTime createdAt) {
+    public PostDTO(Long id, String backgroundImage, String text, String videoId , LocalDateTime createdAt) {
         this.id = id;
         this.backgroundImage = backgroundImage;
         this.text = text;
-        this.youtubeUrl = youtubeUrl;
+        this.videoId  = videoId ;
         this.createdAt = createdAt;
     }
 
@@ -43,7 +43,7 @@ public class PostDTO {
         postDTO.setRequestImages(postEntity.getRequestImages());
         postDTO.setText(postEntity.getText());
         postDTO.setCreatedAt(postEntity.getCreatedAt());
-        postDTO.setYoutubeUrl(postEntity.getYoutubeUrl());
+        postDTO.setVideoId(postEntity.getVideoId());
         return postDTO;
     }
 }

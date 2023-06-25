@@ -30,7 +30,7 @@ public class PostEntity extends TimeEntity {
     private String text;
 
     @Column //BGM 대신 유튜브 url
-    private String youtubeUrl;
+    private String videoId;
 
     @Column
     private int fileAttached; // 1 or 0
@@ -41,7 +41,7 @@ public class PostEntity extends TimeEntity {
         postEntity.setBackgroundImage(postDTO.getBackgroundImage());
         postEntity.setRequestImages(postDTO.getRequestImages());
         postEntity.setText(postDTO.getText());
-        postEntity.setYoutubeUrl(postDTO.getYoutubeUrl());
+        postEntity.setVideoId(postDTO.getVideoId());
         return postEntity;
     }
 }

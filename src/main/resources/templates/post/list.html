@@ -13,7 +13,7 @@
     <th>requestImages</th>
     <th>text</th>
     <th>createdAt</th>
-    <th>YoutubeURL</th>
+    <th>videoId</th>
   </tr>
   <tr th:each="post: ${postList}">
     <td th:text="${post.id}"></td>
@@ -22,7 +22,7 @@
     <td th:text="${post.requestImages}"></td>
     <td th:text="${post.text}"></td>
     <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-    <td th:text="${post.youtubeUrl}"></td>
+    <td th:text="${post.videoId}"></td>
   </tr>
 </table>
 </body>

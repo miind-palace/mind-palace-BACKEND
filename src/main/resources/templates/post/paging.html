@@ -12,14 +12,14 @@
         <th>id</th>
         <th>backgroundImage</th>
         <th>text</th>
-        <th>youtubeUrl</th>
+        <th>videoId</th>
         <th>createdAt</th>
     </tr>
     <tr th:each="post: ${postList}">
         <td th:text="${post.id}"></td>
         <td><a th:href="@{|/post/${post.id}|(page=${postList.number + 1})}" th:text="${post.backgroundImage}"></a></td>
         <td th:text="${post.text}"></td>
-        <td th:text="${post.youtubeUrl}"></td>
+        <td th:text="${post.videoId}"></td>
         <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
     </tr>
 </table>
