@@ -18,6 +18,8 @@ public class PostDTO {
 
     //글 작성시간, 글 삭제 시간(필요한가?)
     private LocalDateTime createdAt;
+    private Long memberId;
+
 //    private LocalDateTime deletedAt;
 
     //대충 만들어놓은 html 바탕
@@ -44,6 +46,7 @@ public class PostDTO {
         postDTO.setText(postEntity.getText());
         postDTO.setCreatedAt(postEntity.getCreatedAt());
         postDTO.setVideoId(postEntity.getVideoId());
+        postDTO.setMemberId(postEntity.getMemberId());
         return postDTO;
     }
 }

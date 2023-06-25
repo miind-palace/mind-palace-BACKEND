@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,5 +64,17 @@ public class PostService {
         //entities에서 post 하나씩 꺼내서 DTO에 담음
         Page<PostDTO> postDTOS = postEntities.map(post -> new PostDTO(post.getId(), post.getBackgroundImage(), post.getText(), post.getVideoId(), post.getCreatedAt()));
         return postDTOS;
+    }
+
+    @Transactional
+    public List<PostDTO> findByMemberId(Long memberId) {
+        List<PostEntity> postEntityList = postRepository.findByMemberId(memberId);
+        List<PostDTO> postDTOList = new ArrayList<>();
+
+        for (PostEntity postEntity: postEntityList){
+            postDTOList.add(PostDTO.toPostDTO(postEntity));
+        }
+
+        return postDTOList;
     }
 }
