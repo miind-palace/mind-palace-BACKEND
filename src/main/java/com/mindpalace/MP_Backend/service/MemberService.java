@@ -95,9 +95,9 @@ public class MemberService {
     public String emailCheck(String memberEmail) {
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
         if (byMemberEmail.isPresent()){ //조회 결과가 있으면 누군가 쓰고 있으므로 사용 불가
-            return null;
+            return "이미 사용하고 있는 이메일입니다.";
         } else{
-            return "ok";
+            return "사용가능한 이메일입니다!";
         }
     }
 }
