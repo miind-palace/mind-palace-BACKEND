@@ -14,7 +14,7 @@
     requestImages: <input type="text" name="requestImages"> <br>
     text: <textarea name="text" cols="30" rows="10"></textarea> <br>
     videoId: <input type="text" name="videoId"> <br>
-    memberId: <input type="text" name="memberId" th:value="${session.memberId}" readonly><br>
+    memberId: <input type="number" name="memberId" th:value="${session.memberId}" readonly><br>
 <!--    file: <input type="file" name="postFile"> <br>-->
     <button type="submit" value="글작성">글작성</button><br>
 </form>

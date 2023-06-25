@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
 public class PostController {
@@ -76,6 +76,7 @@ public class PostController {
 
     @GetMapping("/mypage")
     public String findByMemberId(@RequestParam Long memberId, Model model){
+        System.out.println(memberId);
         List<PostDTO> postDTOList = postService.findByMemberId(memberId);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
@@ -83,7 +84,7 @@ public class PostController {
 
         String json = gson.toJson(postDTOList);
         model.addAttribute("memoryList", json);
-        return "post/mypage";
+        return json;
     }
 
     @GetMapping("/paging")
