@@ -64,4 +64,9 @@ public class PostService {
         Page<PostDTO> postDTOS = postEntities.map(post -> new PostDTO(post.getId(), post.getBackgroundImage(), post.getText(), post.getVideoId(), post.getCreatedAt()));
         return postDTOS;
     }
+
+    public List<PostDTO> findByMemberId(Long memberId) {
+        List<PostDTO> postDTOList = postRepository.findByMemberId(memberId);
+        return postDTOList;
+    }
 }

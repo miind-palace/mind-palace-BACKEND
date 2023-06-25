@@ -33,6 +33,7 @@ public class PostController {
     //게시글 등록
     @PostMapping("/save")
     public String save(@ModelAttribute PostDTO postDTO, @RequestParam("file") MultipartFile file){
+        System.out.println(postDTO);
         if (!file.isEmpty()) {
             String imageUrl = cloudinaryService.uploadFile(file);
             postDTO.setBackgroundImage(imageUrl);
@@ -71,6 +72,18 @@ public class PostController {
     public String delete(@PathVariable Long id){
         postService.delete(id);
         return "redirect:/post/list";
+    }
+
+    @GetMapping("/mypage")
+    public String findByMemberId(@RequestParam Long memberId, Model model){
+        List<PostDTO> postDTOList = postService.findByMemberId(memberId);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+
+        String json = gson.toJson(postDTOList);
+        model.addAttribute("memoryList", json);
+        return "post/mypage";
     }
 
     @GetMapping("/paging")

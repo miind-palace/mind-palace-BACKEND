@@ -35,6 +35,9 @@ public class PostEntity extends TimeEntity {
     @Column
     private int fileAttached; // 1 or 0
 
+    @Column
+    private Long memberId;
+
     public static PostEntity toSaveEntity(PostDTO postDTO){
         PostEntity postEntity = new PostEntity();
         postEntity.setKeyword(postDTO.getKeyword());
@@ -42,6 +45,7 @@ public class PostEntity extends TimeEntity {
         postEntity.setRequestImages(postDTO.getRequestImages());
         postEntity.setText(postDTO.getText());
         postEntity.setVideoId(postDTO.getVideoId());
+        postEntity.setMemberId(postDTO.getMemberId());
         return postEntity;
     }
 }

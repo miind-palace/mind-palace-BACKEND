@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>save</title>
@@ -14,8 +14,9 @@
     requestImages: <input type="text" name="requestImages"> <br>
     text: <textarea name="text" cols="30" rows="10"></textarea> <br>
     videoId: <input type="text" name="videoId"> <br>
+    memberId: <input type="text" name="memberId" th:value="${session.memberId}" readonly><br>
 <!--    file: <input type="file" name="postFile"> <br>-->
-    <button type="submit" value="글작성">글작성</button>
+    <button type="submit" value="글작성">글작성</button><br>
 </form>
 </body>
 </html>

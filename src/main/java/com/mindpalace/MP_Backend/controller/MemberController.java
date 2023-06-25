@@ -30,7 +30,8 @@ public class MemberController {
         if (loginResult != null) {
             //로그인 성공
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
-            return "member/main";
+            session.setAttribute("memberId", loginResult.getId());
+            return "post/save";
         } else {
             //로그인 실패
             return "member/login";
