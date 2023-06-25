@@ -56,7 +56,7 @@ public class PostService {
         int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
         //Sort.unsorted() 랜덤하게 될지 확인해봐야
         Page<PostEntity> postEntities =
-                postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+                postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt")));
         //Page를 List로 가져가면 getContent() getNumber() getTotalPages() 등 메소드 못 씀.
 
         //

@@ -1,8 +1,11 @@
 package com.mindpalace.MP_Backend.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.PostDTO;
-import com.mindpalace.MP_Backend.service.PostService;
 import com.mindpalace.MP_Backend.service.CloudinaryService;
+import com.mindpalace.MP_Backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -42,8 +46,13 @@ public class PostController {
     @GetMapping("/list")
     public String findAll(Model model) {
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
-        List<PostDTO> boardDTOList = postService.findAll();
-        model.addAttribute("postList", boardDTOList);
+        List<PostDTO> postDTOList = postService.findAll();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+
+        String json = gson.toJson(postDTOList);
+        model.addAttribute("memoryList", json);
         return "post/list";
     }
 

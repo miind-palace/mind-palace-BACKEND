@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -27,7 +29,7 @@ public class MemberController {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
-            session.setAttribute("loginEmail", loginResult.getMemberEmail());
+            session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
             return "member/main";
         } else {
             //로그인 실패

@@ -15,14 +15,17 @@
     <th>createdAt</th>
     <th>videoId</th>
   </tr>
-  <tr th:each="post: ${postList}">
-    <td th:text="${post.id}"></td>
-    <td th:text="${post.keyword}"></td>
-    <td><a th:href="|/post/${post.id}|" th:text="${post.backgroundImage}"></a></td>
-    <td th:text="${post.requestImages}"></td>
-    <td th:text="${post.text}"></td>
-    <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-    <td th:text="${post.videoId}"></td>
+<!--  <tr th:each="post: ${memoryList}">-->
+<!--    <td th:text="${post.id}"></td>-->
+<!--    <td th:text="${post.keyword}"></td>-->
+<!--    <td><a th:href="|/post/${post.id}|" th:text="${post.backgroundImage}"></a></td>-->
+<!--    <td th:text="${post.requestImages}"></td>-->
+<!--    <td th:text="${post.text}"></td>-->
+<!--    <td th:text="*{#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
+<!--    <td th:text="${post.videoId}"></td>-->
+<!--  </tr>-->
+  <tr th:text="${memoryList}">
+<!--      <td th:text ="${post}"></td>-->
   </tr>
 </table>
 </body>
