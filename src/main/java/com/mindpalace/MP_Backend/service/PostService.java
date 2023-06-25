@@ -1,5 +1,6 @@
 package com.mindpalace.MP_Backend.service;
 
+import com.mindpalace.MP_Backend.EntityToDtoConverter;
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.entity.PostEntity;
 import com.mindpalace.MP_Backend.repository.PostRepository;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,6 @@ public class PostService {
         return postDTOS;
     }
 
-    @Transactional
     public List<PostDTO> findByMemberId(Long memberId) {
         List<PostEntity> postEntityList = postRepository.findByMemberId(memberId);
         List<PostDTO> postDTOList = new ArrayList<>();
@@ -76,5 +75,16 @@ public class PostService {
         }
 
         return postDTOList;
+    }
+
+    public Page<PostDTO> findPageByMemberId(Pageable pageable, Long memberId) {
+        int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+        Pageable paging = PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<PostEntity> postEntityList = postRepository.findPageByMemberId(paging, memberId);
+
+        Page<PostDTO> postDTOPage = EntityToDtoConverter.convert(postEntityList, paging);
+
+        return postDTOPage;
     }
 }
