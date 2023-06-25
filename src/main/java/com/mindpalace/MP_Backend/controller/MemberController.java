@@ -1,16 +1,20 @@
 package com.mindpalace.MP_Backend.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
+
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MemberController {
     // 생성자 주입
@@ -25,16 +29,25 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+    public String login(@RequestBody MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
+            Long id = loginResult.getId();
+            MemberDTO memberId = new MemberDTO();
+            memberId.setId(id);
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
-            session.setAttribute("memberId", loginResult.getId());
-            return "post/save";
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+            Gson gson = gsonBuilder.setPrettyPrinting().create();
+
+            String json = gson.toJson(memberId);
+            // 로그인 성공
+            return json;
         } else {
             //로그인 실패
-            return "member/login";
+            return "로그인 실패";
         }
     }
 
@@ -42,7 +55,7 @@ public class MemberController {
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 로그인 무효화
-        return "index";
+        return "로그아웃 성공";
     }
 
     // 회원가입
@@ -54,11 +67,11 @@ public class MemberController {
 
     //회원가입 요청
     @PostMapping("/member/save")
-    public String save(@ModelAttribute MemberDTO memberDTO) {
+    public String save(@RequestBody MemberDTO memberDTO) {
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
-        return "member/login";
+        return "회원가입 성공!";
     }
 
     //아이디 중복 확인
