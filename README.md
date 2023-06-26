@@ -28,7 +28,9 @@
 #### 🧊 개발 환경     
 - Spring Boot 2.7.13 & Java 11 
 - AWS Elastic Beanstalk
-- RDS + mysql
+- AWS RDS + mysql
+- Cloudinary
+- 
 
 ## ℹ️ 배포 상태
 [http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/](http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/)
