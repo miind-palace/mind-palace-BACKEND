@@ -61,7 +61,7 @@ public class EmailService {
     public String setContext(String code){
         Context context = new Context();
         context.setVariable("code", code);
-        return templateEngine.process("mail", context); // mail.html
+        return templateEngine.process("/member/mail", context); // mail.html
     }
 
     //실제 메일 전송

@@ -1,5 +1,6 @@
 package com.mindpalace.MP_Backend.service;
 
+import com.mindpalace.MP_Backend.EntityToDtoConverter;
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.entity.PostEntity;
 import com.mindpalace.MP_Backend.repository.PostRepository;
@@ -53,7 +54,7 @@ public class PostService {
 
     public Page<PostDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
-        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+        int pageLimit = 4; // 한 페이지에 보여줄 글 갯수
         //Sort.unsorted() 랜덤하게 될지 확인해봐야
         Page<PostEntity> postEntities =
                 postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt")));
@@ -66,7 +67,25 @@ public class PostService {
     }
 
     public List<PostDTO> findByMemberId(Long memberId) {
-        List<PostDTO> postDTOList = postRepository.findByMemberId(memberId);
+        List<PostEntity> postEntityList = postRepository.findByMemberId(memberId);
+        List<PostDTO> postDTOList = new ArrayList<>();
+
+        for (PostEntity postEntity: postEntityList){
+            postDTOList.add(PostDTO.toPostDTO(postEntity));
+        }
+
         return postDTOList;
+    }
+
+    public Page<PostDTO> findPageByMemberId(Pageable pageable, Long memberId) {
+        int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
+        int pageLimit = 4; // 한 페이지에 보여줄 글 갯수
+
+        Pageable paging = PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<PostEntity> postEntityList = postRepository.findPageByMemberId(paging, memberId);
+
+        Page<PostDTO> postDTOPage = EntityToDtoConverter.convert(postEntityList, paging);
+
+        return postDTOPage;
     }
 }

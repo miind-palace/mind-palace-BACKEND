@@ -81,8 +81,9 @@ public class PostController {
     }
 
     @GetMapping("/mypage")
-    public String findByMemberId(@RequestParam Long memberId, Model model){
-        System.out.println(memberId);
+    public String findByMemberId(@RequestParam("memberId") Long memberId, Model model){
+        System.out.println("PostController.findByMemberId");
+        System.out.println("memberId = " + memberId);
         List<PostDTO> postDTOList = postService.findByMemberId(memberId);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
@@ -97,15 +98,40 @@ public class PostController {
     public String paging(@PageableDefault(page=1) Pageable pageable, Model model){
         //pageable.getPageNumber();
         Page<PostDTO> postList = postService.paging(pageable);
-        int blockLimit = 3; // 밑에 보여지는 페이지 개수
+        int blockLimit = 4; // 밑에 보여지는 페이지 개수
         //1, 4, 7, 10 ~~
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         //3, 6, 9, 12, <총 페이지가 8개라면 7, 8로 끝나야 함. 삼항연산자 사용
         int endPage = ((startPage + blockLimit - 1) < postList.getTotalPages()) ? startPage + blockLimit - 1 : postList.getTotalPages();
 
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+        String json = gson.toJson(postList) + "\n" +"startPage : " + startPage + "endPage : " + endPage ;
+
         model.addAttribute("postList", postList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        return "post/paging";
+        return json;
+    }
+
+    @GetMapping("/page")
+    public String findPageByMemberId(@PageableDefault(page=1) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
+        System.out.println("PostController.findPageByMemberId");
+        System.out.println("pageable = " + pageable);
+        Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
+        int blockLimit = 4; // 밑에 보여지는 페이지 개수
+        //1, 4, 7, 10 ~~
+        //int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        //3, 6, 9, 12, <총 페이지가 8개라면 7, 8로 끝나야 함. 삼항연산자 사용
+        //int endPage = ((startPage + blockLimit - 1) < postList.getTotalPages()) ? startPage + blockLimit - 1 : postList.getTotalPages();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        //LocalDateTime 직렬화
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+        String json = gson.toJson(postList);
+
+        return json;
     }
 }
