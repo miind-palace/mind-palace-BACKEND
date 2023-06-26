@@ -7,7 +7,7 @@
 
 <br />
 
-- My-Pal 팀의 백 엔드 레포입니다 😊
+- My-Pal 팀의 백엔드 레포입니다 😊
 
 ## 👨‍💻 프론트엔드 팀원 소개 
 |    곰곰    |    네모    |    누누    |    담    |    아론    |    플루토    |
@@ -34,5 +34,8 @@
 ## ℹ️ 배포 상태
 [http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/](http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/)
 
-## 🔗 백엔드 깃 레포지토리  
+## ❓ API 명세서
+[https://debonair-quality-71d.notion.site/Mind-Palace-API-6022e697d2db461f886274e88648145e?pvs=4](https://debonair-quality-71d.notion.site/Mind-Palace-API-6022e697d2db461f886274e88648145e?pvs=4)
+
+## 🔗 프론트엔드 깃 레포지토리  
 [mind-palace-FE](https://github.com/miind-palace/mind-palace-FE)
