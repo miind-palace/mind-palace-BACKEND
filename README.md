@@ -1,5 +1,5 @@
 
-# My-Pal: Mind Place
+# My-Pal: Mind Palace
 
 당신의 기억이 사라지지 않도록 보관하세요.
 
