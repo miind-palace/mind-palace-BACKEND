@@ -30,8 +30,7 @@
 - AWS Elastic Beanstalk
 - AWS RDS + mysql
 - Cloudinary
-- 
-
+  
 ## ℹ️ 배포 상태
 [http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/](http://mind-palace-server-env.eba-mnzkhpyr.us-east-1.elasticbeanstalk.com/)
 
