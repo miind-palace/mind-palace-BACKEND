@@ -54,7 +54,8 @@ public class PostService {
 
     public Page<PostDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
-        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        int pageLimit = 4; // 한 페이지에 보여줄 글 갯수
         //Sort.unsorted() 랜덤하게 될지 확인해봐야
         Page<PostEntity> postEntities =
                 postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt")));
@@ -79,7 +80,7 @@ public class PostService {
 
     public Page<PostDTO> findPageByMemberId(Pageable pageable, Long memberId) {
         int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
-        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+        int pageLimit = 4; // 한 페이지에 보여줄 글 갯수
         Pageable paging = PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<PostEntity> postEntityList = postRepository.findPageByMemberId(paging, memberId);
 
