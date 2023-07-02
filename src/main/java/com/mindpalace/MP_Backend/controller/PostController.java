@@ -116,8 +116,6 @@ public class PostController {
 
     @GetMapping("/page")
     public String findPageByMemberId(@PageableDefault(page=1) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
-        System.out.println("PostController.findPageByMemberId");
-        System.out.println("pageable = " + pageable);
         Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
         int blockLimit = 4; // 밑에 보여지는 페이지 개수
         //1, 4, 7, 10 ~~
