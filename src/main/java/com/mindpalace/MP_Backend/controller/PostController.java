@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.PostDTO;
-import com.mindpalace.MP_Backend.repository.PostRepository;
 import com.mindpalace.MP_Backend.service.CloudinaryService;
 import com.mindpalace.MP_Backend.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -44,16 +43,11 @@ public class PostController {
 
     //게시글 목록조회
     @GetMapping("/list")
-    public String findAll(Model model) {
+    public List<PostDTO> findAll(Model model) {
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<PostDTO> postDTOList = postService.findAll();
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-        Gson gson = gsonBuilder.setPrettyPrinting().create();
-
-        String json = gson.toJson(postDTOList);
         // model.addAttribute("memoryList", json);
-        return json;
+        return postDTOList;
     }
 
     //게시글 상세조회
@@ -74,17 +68,9 @@ public class PostController {
     }
 
     @GetMapping("/findByMemberId")
-    public String findByMemberId(@RequestParam Long memberId, Model model){
-
-        System.out.println(memberId);
+    public List<PostDTO> findByMemberId(@RequestParam Long memberId, Model model){
         List<PostDTO> postDTOList = postService.findByMemberId(memberId);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-        Gson gson = gsonBuilder.setPrettyPrinting().create();
-
-        String json = gson.toJson(postDTOList);
-        model.addAttribute("memoryList", json);
-        return json;
+        return postDTOList;
     }
 
     //게시글 삭제
@@ -94,7 +80,7 @@ public class PostController {
         return "삭제 성공!";
     }
 
-    @GetMapping("/paging")
+    //@GetMapping("/paging")
     public String paging(@PageableDefault(page=1) Pageable pageable, Model model){
         //pageable.getPageNumber();
         Page<PostDTO> postList = postService.paging(pageable);
@@ -114,22 +100,10 @@ public class PostController {
         String json = gson.toJson(postList);
         return json;
     }
+
     @GetMapping("/page")
-    public String findPageByMemberId(@PageableDefault(page=1) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
+    public Page<PostDTO> findPageByMemberId(@PageableDefault(page=1) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
         Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
-        int blockLimit = 3; // 밑에 보여지는 페이지 개수
-        //1, 4, 7, 10 ~~
-        //int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-        //3, 6, 9, 12, <총 페이지가 8개라면 7, 8로 끝나야 함. 삼항연산자 사용
-        //int endPage = ((startPage + blockLimit - 1) < postList.getTotalPages()) ? startPage + blockLimit - 1 : postList.getTotalPages();
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        //LocalDateTime 직렬화
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-
-        Gson gson = gsonBuilder.setPrettyPrinting().create();
-        String json = gson.toJson(postList);
-
-        return json;
+        return postList;
     }
 }

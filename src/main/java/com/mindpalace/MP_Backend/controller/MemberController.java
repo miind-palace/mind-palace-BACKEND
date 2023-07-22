@@ -1,8 +1,5 @@
 package com.mindpalace.MP_Backend.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
-import java.time.LocalDateTime;
 
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
@@ -31,7 +26,8 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public String login(@RequestBody MemberDTO memberDTO, HttpSession session) {
+    public MemberDTO login(@RequestBody MemberDTO memberDTO,
+                           HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -39,18 +35,15 @@ public class MemberController {
             MemberDTO memberId = new MemberDTO();
             memberId.setId(id);
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-            Gson gson = gsonBuilder.setPrettyPrinting().create();
 
-            String json = gson.toJson(memberId);
             // 로그인 성공
-            return json;
+            return memberId;
         } else {
             //로그인 실패
-            return "로그인 실패";
+            return null;
         }
     }
+
 
     //로그아웃 요청
     @GetMapping("/member/logout")
@@ -69,8 +62,6 @@ public class MemberController {
     //회원가입 요청
     @PostMapping("/member/save")
     public ResponseEntity<String> save(@RequestBody MemberDTO memberDTO) {
-        System.out.println("MemberController.save");
-        System.out.println("memberDTO = " + memberDTO);
         try {
             memberService.save(memberDTO);
             return ResponseEntity.ok("회원가입 성공!");
@@ -87,7 +78,6 @@ public class MemberController {
         String checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
     }
-
 
 
 //    //회원 정보 수정
