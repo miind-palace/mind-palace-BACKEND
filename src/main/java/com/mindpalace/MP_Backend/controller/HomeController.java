@@ -1,12 +1,15 @@
 package com.mindpalace.MP_Backend.controller;
 
 import com.mindpalace.MP_Backend.SessionConst;
-import com.mindpalace.MP_Backend.dto.MemberDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+@Slf4j
 @Controller
 public class HomeController {
     //@GetMapping("/")
@@ -15,13 +18,23 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String homeLogin(@SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false) MemberDTO loginMember, Model model) {
-        //세션에 회원 데이터가 없으면 home으로
-        if (loginMember == null){
+    public String homeLogin(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session == null){
             return "index";
         }
-        //세션이 유지되면 로그인으로 이동
-        model.addAttribute("member", loginMember);
+        session.getAttributeNames().asIterator()
+                .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
+
+        String loginEmail = (String)session.getAttribute(SessionConst.LOGIN_EMAIL);
+
+        log.info("loginEmail= {}" + loginEmail);
+
+        //세션에 회원 데이터가 없으면 home으로
+        if (loginEmail == null){
+            return "index";
+        }
+
         return "loginIndex";
     }
 }

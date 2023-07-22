@@ -4,12 +4,13 @@ import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.entity.MemberEntity;
 import com.mindpalace.MP_Backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -28,6 +29,7 @@ public class MemberService {
             2. DB에서 조회한 비밀번호와 사용자가 입력한 비밀번호가 일치하는지 판단
         */
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
+        log.info("memberDTO" + memberDTO);
         if (byMemberEmail.isPresent()){
             //조회 결과가 있다(해당 이메일을 가진 회원 정보가 있다)
             MemberEntity memberEntity = byMemberEmail.get();

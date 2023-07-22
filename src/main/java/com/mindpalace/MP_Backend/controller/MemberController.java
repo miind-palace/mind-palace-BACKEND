@@ -3,15 +3,18 @@ package com.mindpalace.MP_Backend.controller;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
-@RestController
+@Slf4j
+@Controller
 @RequiredArgsConstructor
 public class MemberController {
     // 생성자 주입
@@ -26,7 +29,7 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public MemberDTO login(@RequestBody MemberDTO memberDTO,
+    public MemberDTO login(@ModelAttribute MemberDTO memberDTO,
                            HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
@@ -36,7 +39,11 @@ public class MemberController {
             memberId.setId(id);
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
 
+            session.getAttributeNames().asIterator()
+                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
+
             // 로그인 성공
+            log.info("MemberController {}" + memberId);
             return memberId;
         } else {
             //로그인 실패
