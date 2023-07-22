@@ -56,7 +56,7 @@ public class MemberController {
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 로그인 무효화
-        return "로그아웃 성공";
+        return "redirect:/";
     }
 
     // 회원가입
