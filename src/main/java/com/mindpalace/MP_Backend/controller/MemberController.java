@@ -3,6 +3,7 @@ package com.mindpalace.MP_Backend.controller;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -35,6 +37,9 @@ public class MemberController {
             MemberDTO memberId = new MemberDTO();
             memberId.setId(id);
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
+
+            session.getAttributeNames().asIterator()
+                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
 
             // 로그인 성공
             return memberId;

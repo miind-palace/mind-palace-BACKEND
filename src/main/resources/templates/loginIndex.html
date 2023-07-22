@@ -12,7 +12,8 @@
 <br/>
 <br/>
 <br/>
-<h4 class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</h4>
+session 값 확인 : <p th:text="${session.loginEmail}"></p>
+<a href="/member/logout">로그아웃</a>
 <h2>게시물 등록</h2>
 <button onclick="saveReq()">글작성</button>
 <a href="/post/save">글작성(링크)</a>
