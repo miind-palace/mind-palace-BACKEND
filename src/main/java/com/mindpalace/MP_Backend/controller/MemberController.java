@@ -3,6 +3,8 @@ package com.mindpalace.MP_Backend.controller;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +26,8 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public MemberDTO login(@RequestBody MemberDTO memberDTO, HttpSession session) {
+    public MemberDTO login(@RequestBody MemberDTO memberDTO,
+                           HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -40,6 +43,7 @@ public class MemberController {
             return null;
         }
     }
+
 
     //로그아웃 요청
     @GetMapping("/member/logout")
@@ -57,9 +61,14 @@ public class MemberController {
 
     //회원가입 요청
     @PostMapping("/member/save")
-    public String save(@RequestBody MemberDTO memberDTO) {
-        memberService.save(memberDTO);
-        return "회원가입 성공!";
+    public ResponseEntity<String> save(@RequestBody MemberDTO memberDTO) {
+        try {
+            memberService.save(memberDTO);
+            return ResponseEntity.ok("회원가입 성공!");
+        } catch (Exception e) {
+            String errorMessage = "회원가입 실패: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
     }
 
     //아이디 중복 확인
@@ -69,6 +78,7 @@ public class MemberController {
         String checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
     }
+
 
 //    //회원 정보 수정
 //    @GetMapping("/times/member/update")
