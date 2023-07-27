@@ -1,6 +1,5 @@
 package com.mindpalace.MP_Backend.service;
 
-import com.mindpalace.MP_Backend.EntityToDtoConverter;
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.entity.PostEntity;
 import com.mindpalace.MP_Backend.repository.PostRepository;

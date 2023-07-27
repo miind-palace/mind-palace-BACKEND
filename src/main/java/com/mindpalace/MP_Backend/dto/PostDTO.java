@@ -4,12 +4,15 @@ import com.mindpalace.MP_Backend.entity.PostEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 public class PostDTO {
     private Long id;
+
+    @NotNull
     private String keyword;
     private String backgroundImage;
     private String[] requestImages;

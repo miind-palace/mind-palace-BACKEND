@@ -1,4 +1,4 @@
-package com.mindpalace.MP_Backend;
+package com.mindpalace.MP_Backend.service;
 
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.entity.PostEntity;
