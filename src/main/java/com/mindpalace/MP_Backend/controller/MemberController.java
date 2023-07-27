@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MemberController {
     // 생성자 주입

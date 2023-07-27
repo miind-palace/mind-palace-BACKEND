@@ -18,9 +18,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         log.info("세션값 들어오는지 확인" + session);
-        session.getAttributeNames().asIterator()
-                .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
 
+        if (session != null){
+            session.getAttributeNames().asIterator()
+                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
+        }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_EMAIL) == null){
             log.info("미인증 사용자 요청");
