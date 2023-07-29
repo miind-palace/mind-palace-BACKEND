@@ -31,6 +31,7 @@ public class MemberController {
     @PostMapping("/member/login")
     public MemberDTO login(@ModelAttribute MemberDTO memberDTO,
                            HttpSession session) {
+        System.out.println("멤버 컨트롤러 memberDTO = " + memberDTO);
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -56,7 +57,7 @@ public class MemberController {
     @GetMapping("/member/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 로그인 무효화
-        return "redirect:/";
+        return "로그아웃 성공";
     }
 
     // 회원가입
