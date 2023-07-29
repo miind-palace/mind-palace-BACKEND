@@ -15,7 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ErrorResult numberExHandle(MethodArgumentTypeMismatchException e) {
         log.error("[exceptionHandle] ex", e);
         return new ErrorResult("BAD", e.getMessage());
@@ -26,13 +26,6 @@ public class ExControllerAdvice {
     public ErrorResult illegalExHandle(IllegalArgumentException e) {
         log.error("[exceptionHandle] ex", e);
         return new ErrorResult("BAD", e.getMessage());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ErrorResult> userExHandle(ExecutionControl.UserException e) {
-        log.error("[exceptionHandle] ex", e);
-        ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
