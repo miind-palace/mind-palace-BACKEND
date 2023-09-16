@@ -17,7 +17,7 @@
 ## 👨‍💻 백엔드 팀원 소개  
 |    오원    |    리히트    |
 |:---:|:---:|
-|    [@오원](https://github.com/signalzero96)    |    [@리히트](https://github.com/RE-Heat)    |
+|    [@오원](https://github.com/Owonie)    |    [@리히트](https://github.com/RE-Heat)    |
 
 ## 🖌️ 디자이너 소개  
 |    허니비    |
