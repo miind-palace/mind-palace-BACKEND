@@ -88,4 +88,11 @@ public class PostService {
 
         return postDTOPage;
     }
+
+    public Page<PostDTO> randomizePosts(Pageable pageable){
+        Page<PostEntity> postEntityList = postRepository.randomizePosts(pageable);
+        Page<PostDTO> postDTORandomPage = EntityToDtoConverter.convert(postEntityList, pageable);
+
+        return postDTORandomPage;
+    }
 }
