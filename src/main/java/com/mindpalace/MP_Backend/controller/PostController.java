@@ -9,6 +9,7 @@ import com.mindpalace.MP_Backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -102,7 +103,7 @@ public class PostController {
     }
 
     @GetMapping("/page")
-    public Page<PostDTO> findPageByMemberId(@PageableDefault(page=1) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
+    public Page<PostDTO> findPageByMemberId(@PageableDefault(sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
         Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
         return postList;
     }
