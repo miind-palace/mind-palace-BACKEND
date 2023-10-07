@@ -107,4 +107,10 @@ public class PostController {
         Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
         return postList;
     }
+
+    @GetMapping("/page/random")
+    public Page<PostDTO> randomizePosts(@PageableDefault(size=5) Pageable pageable, @RequestParam("memberId") Long memberId){
+        Page<PostDTO> postList = postService.randomizePosts(pageable, memberId);
+        return postList;
+    }
 }

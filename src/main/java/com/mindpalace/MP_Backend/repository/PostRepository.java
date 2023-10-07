@@ -15,5 +15,8 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {//Entit
     List<PostEntity> findByMemberId(@Param("memberId") Long memberId);
 
     @Query("select p from PostEntity p where memberId=:memberId")
-    Page<PostEntity> findPageByMemberId(Pageable pageable, @Param("memberId") Long memberId);
+    Page<PostEntity> findPageByMemberId(Pageable paging, @Param("memberId") Long memberId);
+
+    @Query("select p from PostEntity p where memberId=:memberId order by rand()")
+    Page<PostEntity> randomizePosts(Pageable pageable, @Param("memberId") Long memberId);
 }
