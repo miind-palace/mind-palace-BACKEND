@@ -11,9 +11,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins("http://localhost:3000","https://mind-palace.co.kr","https://www.mind-palace.co.kr")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .allowCredentials(true)
                 .maxAge(3600);
     }
     //스프링 인터셉터 추가
