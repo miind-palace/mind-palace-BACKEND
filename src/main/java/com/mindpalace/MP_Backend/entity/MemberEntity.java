@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Setter
@@ -16,12 +18,16 @@ public class MemberEntity {
     private Long id;
 
     @Column(unique = true) // unique 제약조건 추가
+    @NotBlank(message = "이메일은 필수 입력 값입니다")
+    @Email(message = "이메일 형식에 맞지 않습니다")
     private String memberEmail;
 
     @Column
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다")
     private String memberPassword;
 
     @Column
+    @NotBlank(message = "이름은 필수 입력 값입니다")
     private String memberName;
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO){
