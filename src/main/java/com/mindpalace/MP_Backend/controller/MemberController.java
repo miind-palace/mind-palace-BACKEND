@@ -1,17 +1,15 @@
 package com.mindpalace.MP_Backend.controller;
 
+import com.mindpalace.MP_Backend.dto.LoginDTO;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
-import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
 @Slf4j
 @RestController
@@ -29,22 +27,17 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public MemberDTO login(@ModelAttribute MemberDTO memberDTO,
-                           HttpSession session) {
+    public LoginDTO login(@ModelAttribute MemberDTO memberDTO
+                          ) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
-            Long id = loginResult.getId();
-            MemberDTO memberId = new MemberDTO();
-            memberId.setId(id);
-            session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
+            Long memberId = loginResult.getId();
 
-            session.getAttributeNames().asIterator()
-                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
-
-            // 로그인 성공
-            log.info("MemberController {}" + memberId);
-            return memberId;
+            //로그인 성공 시 MemberDTO에 담긴 id LoginDTO로 옮김
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setId(memberId);
+            return loginDTO;
         } else {
             //로그인 실패
             return null;
