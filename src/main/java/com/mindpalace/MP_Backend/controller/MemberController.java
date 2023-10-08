@@ -1,5 +1,6 @@
 package com.mindpalace.MP_Backend.controller;
 
+import com.mindpalace.MP_Backend.dto.EmailCheckDTO;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -103,10 +104,15 @@ public class MemberController {
 
     //아이디 중복 확인
     @PostMapping("/member/mailCheck")
-    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
+    public @ResponseBody EmailCheckDTO emailCheck(@RequestParam("memberEmail") String memberEmail) {
         System.out.println("memberEmail = " + memberEmail);
         String checkResult = memberService.emailCheck(memberEmail);
-        return checkResult;
+        EmailCheckDTO emailCheckDTO = new EmailCheckDTO();
+        emailCheckDTO.setMessage(checkResult);
+
+        emailCheckDTO.setDuplicated(checkResult.equals("이미 사용하고 있는 이메일입니다."));//중복이면 true 아니면 false
+
+        return emailCheckDTO;
     }
 
 
