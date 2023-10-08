@@ -33,7 +33,7 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public MemberDTO login(@ModelAttribute MemberDTO memberDTO,
+    public MemberDTO login(@RequestBody MemberDTO memberDTO,
                            HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
