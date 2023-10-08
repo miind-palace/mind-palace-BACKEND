@@ -1,5 +1,7 @@
 package com.mindpalace.MP_Backend.controller;
 
+
+import com.mindpalace.MP_Backend.dto.LoginDTO;
 import com.mindpalace.MP_Backend.dto.EmailCheckDTO;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
@@ -15,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 
 @Slf4j
 @RestController
@@ -34,22 +34,18 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public MemberDTO login(@RequestBody MemberDTO memberDTO,
-                           HttpSession session) {
+    public LoginDTO login(@ModelAttribute MemberDTO memberDTO
+                          ) {
+
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
-            Long id = loginResult.getId();
-            MemberDTO memberId = new MemberDTO();
-            memberId.setId(id);
-            session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
+            Long memberId = loginResult.getId();
 
-            session.getAttributeNames().asIterator()
-                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
-
-            // 로그인 성공
-            log.info("MemberController {}" + memberId);
-            return memberId;
+            //로그인 성공 시 MemberDTO에 담긴 id LoginDTO로 옮김
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setId(memberId);
+            return loginDTO;
         } else {
             //로그인 실패
             return null;
