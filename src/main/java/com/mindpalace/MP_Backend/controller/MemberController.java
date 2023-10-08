@@ -1,15 +1,22 @@
 package com.mindpalace.MP_Backend.controller;
 
+
 import com.mindpalace.MP_Backend.dto.LoginDTO;
+import com.mindpalace.MP_Backend.dto.EmailCheckDTO;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @RestController
@@ -29,6 +36,7 @@ public class MemberController {
     @PostMapping("/member/login")
     public LoginDTO login(@ModelAttribute MemberDTO memberDTO
                           ) {
+
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -61,22 +69,46 @@ public class MemberController {
 
     //회원가입 요청
     @PostMapping("/member/save")
-    public ResponseEntity<String> save(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<String> save(@Validated
+                                       @RequestBody MemberDTO memberDTO) {
+        System.out.println("memberDTO = " + memberDTO);
+
         try {
             memberService.save(memberDTO);
             return ResponseEntity.ok("회원가입 성공!");
         } catch (Exception e) {
-            String errorMessage = "회원가입 실패: " + e.getMessage();
+            String exceptionMessage = "회원가입 실패: " + e.getMessage();
+            List<String> errorMessages = extractErrorMessages(exceptionMessage);
+            String errorMessage = String.join(", ", errorMessages);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
 
+    //에러 메시지 추출 메서드
+    private List<String> extractErrorMessages(String exceptionMessage) {
+        List<String> errorMessages = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("messageTemplate='(.*?)'");
+        Matcher matcher = pattern.matcher(exceptionMessage);
+
+        while (matcher.find()) {
+            errorMessages.add(matcher.group(1));
+        }
+
+        return errorMessages;
+    }
+
     //아이디 중복 확인
     @PostMapping("/member/mailCheck")
-    public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
+    public @ResponseBody EmailCheckDTO emailCheck(@RequestParam("memberEmail") String memberEmail) {
         System.out.println("memberEmail = " + memberEmail);
         String checkResult = memberService.emailCheck(memberEmail);
-        return checkResult;
+        EmailCheckDTO emailCheckDTO = new EmailCheckDTO();
+        emailCheckDTO.setMessage(checkResult);
+
+        emailCheckDTO.setDuplicated(checkResult.equals("이미 사용하고 있는 이메일입니다."));//중복이면 true 아니면 false
+
+        return emailCheckDTO;
     }
 
 
