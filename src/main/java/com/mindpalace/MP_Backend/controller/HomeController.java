@@ -1,6 +1,7 @@
 package com.mindpalace.MP_Backend.controller;
 
 import com.mindpalace.MP_Backend.SessionConst;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
+@Api(tags = {"홈 화면 접근용 컨트롤러"})
 public class HomeController {
     //@GetMapping("/")
     public String index() {
