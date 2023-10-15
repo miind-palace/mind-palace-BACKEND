@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +36,8 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public LoginDTO login(@ModelAttribute MemberDTO memberDTO
+    public LoginDTO login(@ModelAttribute MemberDTO memberDTO,
+                          HttpSession session
                           ) {
 
         MemberDTO loginResult = memberService.login(memberDTO);
@@ -45,6 +48,12 @@ public class MemberController {
             //로그인 성공 시 MemberDTO에 담긴 id LoginDTO로 옮김
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setId(memberId);
+
+            session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
+
+            session.getAttributeNames().asIterator()
+                    .forEachRemaining(name-> log.info("session name={}, value={}", name, session.getAttribute(name)));
+
             return loginDTO;
         } else {
             //로그인 실패
