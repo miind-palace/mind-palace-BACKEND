@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.Join;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class MemberController {
     //로그인 요청
     @PostMapping("/member/login")
     @ApiOperation(value = "로그인", response = LoginDTO.class)
-    public LoginDTO login(@ModelAttribute MemberDTO memberDTO, HttpSession session
+    public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session
     ) {
 
         MemberDTO loginResult = memberService.login(memberDTO);
