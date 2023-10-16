@@ -17,7 +17,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         Server serverLocal = new Server("local", "http://localhost:8081", "for local usages", Collections.emptyList(), Collections.emptyList());
-        Server productionServer = new Server("real", "https://www.mind-palace.co.kr/", "for realServer", Collections.emptyList(), Collections.emptyList());
+        Server productionServer = new Server("real", "https://mindspalace.com/", "for realServer", Collections.emptyList(), Collections.emptyList());
 
         return new Docket(DocumentationType.OAS_30)
                 .servers(serverLocal, productionServer)
