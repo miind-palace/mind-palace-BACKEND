@@ -1,10 +1,12 @@
 package com.mindpalace.MP_Backend.controller;
 
 
-import com.mindpalace.MP_Backend.dto.LoginDTO;
 import com.mindpalace.MP_Backend.dto.EmailCheckDTO;
+import com.mindpalace.MP_Backend.dto.LoginDTO;
 import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Api(tags = {"회원가입 및 로그인 API"})
 public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
@@ -36,10 +39,9 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    public LoginDTO login(@ModelAttribute MemberDTO memberDTO,
-                          HttpSession session
-                          ) {
-
+    @ApiOperation(value = "로그인", response = LoginDTO.class)
+    public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session
+    ) {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -52,7 +54,7 @@ public class MemberController {
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
 
             session.getAttributeNames().asIterator()
-                    .forEachRemaining(name-> log.info("session name={}, value={}", name, session.getAttribute(name)));
+                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
 
             return loginDTO;
         } else {
@@ -64,6 +66,7 @@ public class MemberController {
 
     //로그아웃 요청
     @GetMapping("/member/logout")
+    @ApiOperation(value = "로그아웃", response = String.class)
     public String logout(HttpSession session) {
         session.invalidate(); // 로그인 무효화
         return "redirect:/";
@@ -78,6 +81,7 @@ public class MemberController {
 
     //회원가입 요청
     @PostMapping("/member/save")
+    @ApiOperation(value = "회원가입", response = String.class)
     public ResponseEntity<String> save(@Validated
                                        @RequestBody MemberDTO memberDTO) {
         System.out.println("memberDTO = " + memberDTO);
@@ -107,8 +111,9 @@ public class MemberController {
         return errorMessages;
     }
 
-    //아이디 중복 확인
+    //이메일 중복 확인
     @PostMapping("/member/mailCheck")
+    @ApiOperation(value = "이메일 중복 확인", response = EmailCheckDTO.class)
     public @ResponseBody EmailCheckDTO emailCheck(@RequestParam("memberEmail") String memberEmail) {
         System.out.println("memberEmail = " + memberEmail);
         String checkResult = memberService.emailCheck(memberEmail);

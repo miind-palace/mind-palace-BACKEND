@@ -6,6 +6,8 @@ import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
 import com.mindpalace.MP_Backend.dto.PostDTO;
 import com.mindpalace.MP_Backend.service.CloudinaryService;
 import com.mindpalace.MP_Backend.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@Api(tags = {"게시글 API"})
 public class PostController {
     private final PostService postService;
     private final CloudinaryService cloudinaryService;
@@ -32,6 +35,7 @@ public class PostController {
 
     //게시글 등록
     @PostMapping("/save")
+    @ApiOperation(value = "게시글 등록", response = String.class)
     public String save(@ModelAttribute PostDTO postDTO, @RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             String imageUrl = cloudinaryService.uploadFile(file);
@@ -103,12 +107,14 @@ public class PostController {
     }
 
     @GetMapping("/page")
+    @ApiOperation(value = "게시글 확인 + 페이징", response = PostDTO.class)
     public Page<PostDTO> findPageByMemberId(@PageableDefault(sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable, Model model, @RequestParam("memberId") Long memberId){
         Page<PostDTO> postList = postService.findPageByMemberId(pageable, memberId);
         return postList;
     }
 
     @GetMapping("/page/random")
+    @ApiOperation(value = "게시글 랜덤으로 확인", response = PostDTO.class, notes = "한 아이디의 게시글을 랜덤으로 보여줌. page 기본값은 5개")
     public Page<PostDTO> randomizePosts(@PageableDefault(size=5) Pageable pageable, @RequestParam("memberId") Long memberId){
         Page<PostDTO> postList = postService.randomizePosts(pageable, memberId);
         return postList;
