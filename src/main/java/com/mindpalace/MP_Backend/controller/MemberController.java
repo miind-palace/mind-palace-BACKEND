@@ -42,7 +42,6 @@ public class MemberController {
     @ApiOperation(value = "로그인", response = LoginDTO.class)
     public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session
     ) {
-
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
@@ -53,6 +52,7 @@ public class MemberController {
             loginDTO.setId(memberId);
 
             session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
+
             session.getAttributeNames().asIterator()
                     .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
 
