@@ -22,7 +22,7 @@ public class Workaround implements WebMvcOpenApiTransformationFilter {
 
         Server productionServer = new Server();
         productionServer.setDescription("production");
-        productionServer.setUrl("https://www.mind-palace.co.kr/");
+        productionServer.setUrl("https://mindspalace.com/");
         openApi.setServers(Arrays.asList(localServer, productionServer));
         return openApi;
     }
