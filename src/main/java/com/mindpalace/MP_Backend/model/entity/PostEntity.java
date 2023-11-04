@@ -1,6 +1,6 @@
-package com.mindpalace.MP_Backend.entity;
+package com.mindpalace.MP_Backend.model.entity;
 
-import com.mindpalace.MP_Backend.dto.PostDTO;
+import com.mindpalace.MP_Backend.model.dto.PostDTO;
 import lombok.Getter;
 import lombok.Setter;
 

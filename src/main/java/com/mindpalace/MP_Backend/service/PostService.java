@@ -1,7 +1,7 @@
 package com.mindpalace.MP_Backend.service;
 
-import com.mindpalace.MP_Backend.dto.PostDTO;
-import com.mindpalace.MP_Backend.entity.PostEntity;
+import com.mindpalace.MP_Backend.model.dto.PostDTO;
+import com.mindpalace.MP_Backend.model.entity.PostEntity;
 import com.mindpalace.MP_Backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

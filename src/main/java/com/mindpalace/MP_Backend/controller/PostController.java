@@ -3,7 +3,7 @@ package com.mindpalace.MP_Backend.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mindpalace.MP_Backend.LocalDateTimeSerializer;
-import com.mindpalace.MP_Backend.dto.PostDTO;
+import com.mindpalace.MP_Backend.model.dto.PostDTO;
 import com.mindpalace.MP_Backend.service.CloudinaryService;
 import com.mindpalace.MP_Backend.service.PostService;
 import io.swagger.annotations.Api;

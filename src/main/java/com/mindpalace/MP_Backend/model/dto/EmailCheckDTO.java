@@ -1,4 +1,4 @@
-package com.mindpalace.MP_Backend.dto;
+package com.mindpalace.MP_Backend.model.dto;
 
 import lombok.Data;
 

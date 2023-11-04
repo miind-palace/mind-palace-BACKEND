@@ -1,4 +1,4 @@
-package com.mindpalace.MP_Backend.entity;
+package com.mindpalace.MP_Backend.model.entity;
 
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,7 +1,9 @@
 package com.mindpalace.MP_Backend.service;
 
-import com.mindpalace.MP_Backend.dto.MemberDTO;
-import com.mindpalace.MP_Backend.entity.MemberEntity;
+import com.mindpalace.MP_Backend.model.dto.MemberDTO;
+import com.mindpalace.MP_Backend.model.dto.request.LoginRequestDTO;
+import com.mindpalace.MP_Backend.model.dto.response.LoginResponseDTO;
+import com.mindpalace.MP_Backend.model.entity.MemberEntity;
 import com.mindpalace.MP_Backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +25,22 @@ public class MemberService {
         memberRepository.save(memberEntity); // 이 메서드 이름은 save밖에 되지 않는다.
     }
 
-    public MemberDTO login(MemberDTO memberDTO) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         /*
             1. 회원이 입력한 이메일로 DB에서 조회
             2. DB에서 조회한 비밀번호와 사용자가 입력한 비밀번호가 일치하는지 판단
         */
-        Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
-        log.info("memberDTO" + memberDTO);
+        Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(loginRequestDTO.getMemberEmail());
         if (byMemberEmail.isPresent()){
             //조회 결과가 있다(해당 이메일을 가진 회원 정보가 있다)
             MemberEntity memberEntity = byMemberEmail.get();
-            if (memberEntity.getMemberPassword().equals(memberDTO.getMemberPassword())){
+            if (memberEntity.getMemberPassword().equals(loginRequestDTO.getMemberPassword())){
                 // 비밀번호 일치
                 // entity -> dto 변환 후 리턴
                 System.out.println("비밀번호 일치");
-                MemberDTO dto = MemberDTO.toMemberDTO(memberEntity);
+                LoginResponseDTO dto = LoginResponseDTO.builder()
+                        .id(memberEntity.getId())
+                        .build();
                 return dto;
             } else {
                 // 비밀번호 불일치(로그인 실패)

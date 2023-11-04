@@ -1,10 +1,11 @@
 package com.mindpalace.MP_Backend.controller;
 
 
-import com.mindpalace.MP_Backend.dto.EmailCheckDTO;
-import com.mindpalace.MP_Backend.dto.LoginDTO;
-import com.mindpalace.MP_Backend.dto.MemberDTO;
 import com.mindpalace.MP_Backend.exception.ErrorResponse;
+import com.mindpalace.MP_Backend.model.dto.EmailCheckDTO;
+import com.mindpalace.MP_Backend.model.dto.MemberDTO;
+import com.mindpalace.MP_Backend.model.dto.request.LoginRequestDTO;
+import com.mindpalace.MP_Backend.model.dto.response.LoginResponseDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
 
-import static com.mindpalace.MP_Backend.SessionConst.LOGIN_EMAIL;
+import static com.mindpalace.MP_Backend.SessionConst.LOGIN_ID;
 
 @Slf4j
 @RestController
@@ -35,22 +36,19 @@ public class MemberController {
 
     //로그인 요청
     @PostMapping("/member/login")
-    @ApiOperation(value = "로그인", response = LoginDTO.class)
-    public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session
+    @ApiOperation(value = "로그인", response = LoginResponseDTO.class)
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO, HttpSession session
     ) {
-        MemberDTO loginResult = memberService.login(memberDTO);
+        LoginResponseDTO loginResult = memberService.login(loginRequestDTO);
         if (loginResult != null) {
             //로그인 성공
             Long memberId = loginResult.getId();
 
             //로그인 성공 시 MemberDTO에 담긴 id LoginDTO로 옮김
-            LoginDTO loginDTO = new LoginDTO();
+            LoginResponseDTO loginDTO = new LoginResponseDTO();
             loginDTO.setId(memberId);
 
-            session.setAttribute(LOGIN_EMAIL, loginResult.getMemberEmail());
-
-            session.getAttributeNames().asIterator()
-                    .forEachRemaining(name -> log.info("session name={}, value={}", name, session.getAttribute(name)));
+            session.setAttribute(LOGIN_ID, loginResult.getId());
 
             return loginDTO;
         } else {

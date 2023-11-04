@@ -1,6 +1,6 @@
 package com.mindpalace.MP_Backend.repository;
 
-import com.mindpalace.MP_Backend.entity.MemberEntity;
+import com.mindpalace.MP_Backend.model.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
