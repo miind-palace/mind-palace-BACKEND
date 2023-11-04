@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
@@ -36,8 +37,7 @@ public class MemberController {
     //로그인 요청
     @PostMapping("/member/login")
     @ApiOperation(value = "로그인", response = LoginDTO.class)
-    public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session
-    ) {
+    public LoginDTO login(@RequestBody MemberDTO memberDTO, HttpSession session) throws AuthenticationException {
         MemberDTO loginResult = memberService.login(memberDTO);
         if (loginResult != null) {
             //로그인 성공
