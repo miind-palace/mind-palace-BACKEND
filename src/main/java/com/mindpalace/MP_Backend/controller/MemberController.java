@@ -3,8 +3,8 @@ package com.mindpalace.MP_Backend.controller;
 
 import com.mindpalace.MP_Backend.exception.ErrorResponse;
 import com.mindpalace.MP_Backend.model.dto.EmailCheckDTO;
-import com.mindpalace.MP_Backend.model.dto.MemberDTO;
 import com.mindpalace.MP_Backend.model.dto.request.LoginRequestDTO;
+import com.mindpalace.MP_Backend.model.dto.request.SignUpRequestDTO;
 import com.mindpalace.MP_Backend.model.dto.response.LoginResponseDTO;
 import com.mindpalace.MP_Backend.service.MemberService;
 import io.swagger.annotations.Api;
@@ -78,9 +78,9 @@ public class MemberController {
     //회원가입 요청
     @PostMapping("/member/save")
     @ApiOperation(value = "회원가입", response = ErrorResponse.class)
-    public ResponseEntity<Map<String, String>> save(@RequestBody @Valid MemberDTO memberDTO) {
+    public ResponseEntity<Map<String, String>> save(@RequestBody @Valid SignUpRequestDTO signUpRequestDTO) {
         try {
-            memberService.save(memberDTO);
+            memberService.save(signUpRequestDTO);
             return ResponseEntity.ok(Map.ofEntries(Map.entry("message", "회원가입 성공")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.ofEntries());
