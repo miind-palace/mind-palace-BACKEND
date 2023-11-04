@@ -1,16 +1,17 @@
 package com.mindpalace.MP_Backend.model.entity;
 
-import com.mindpalace.MP_Backend.model.dto.PostDTO;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
-@Setter
-@Table(name="mp_post")
+@NoArgsConstructor
+@Table(name = "mp_post")
 public class PostEntity extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,16 +37,18 @@ public class PostEntity extends TimeEntity {
     private int fileAttached; // 1 or 0
 
     @Column
+    @NotBlank(message = "멤버 ID는 필수 입력 값입니다")
     private Long memberId;
 
-    public static PostEntity toSaveEntity(PostDTO postDTO){
-        PostEntity postEntity = new PostEntity();
-        postEntity.setKeyword(postDTO.getKeyword());
-        postEntity.setBackgroundImage(postDTO.getBackgroundImage());
-        postEntity.setRequestImages(postDTO.getRequestImages());
-        postEntity.setText(postDTO.getText());
-        postEntity.setVideoId(postDTO.getVideoId());
-        postEntity.setMemberId(postDTO.getMemberId());
-        return postEntity;
+    @Builder
+    public PostEntity(Long id, String keyword, String backgroundImage, String[] requestImages, String text, String videoId, int fileAttached, Long memberId) {
+        this.id = id;
+        this.keyword = keyword;
+        this.backgroundImage = backgroundImage;
+        this.requestImages = requestImages;
+        this.text = text;
+        this.videoId = videoId;
+        this.fileAttached = fileAttached;
+        this.memberId = memberId;
     }
 }

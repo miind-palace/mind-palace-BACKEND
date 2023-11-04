@@ -1,6 +1,7 @@
 package com.mindpalace.MP_Backend.service;
 
 import com.mindpalace.MP_Backend.model.dto.PostDTO;
+import com.mindpalace.MP_Backend.model.dto.request.PostCreateDTO;
 import com.mindpalace.MP_Backend.model.entity.PostEntity;
 import com.mindpalace.MP_Backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +23,29 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    public void save(PostDTO postDTO) {
-        PostEntity postEntity = PostEntity.toSaveEntity(postDTO);
+    public void save(PostCreateDTO postCreateDTO) {
+        PostEntity postEntity = PostEntity.builder()
+                .keyword(postCreateDTO.getKeyword())
+                .backgroundImage(postCreateDTO.getBackgroundImage())
+                .text(postCreateDTO.getText())
+                .videoId(postCreateDTO.getVideoId())
+                .memberId(postCreateDTO.getMemberId())
+                .build();
         postRepository.save(postEntity);
     }
 
     public List<PostDTO> findAll() {
         List<PostEntity> postEntityList = postRepository.findAll(); //리포지토리로 가져오면 엔티티로 가져 옴.
         List<PostDTO> postDTOList = new ArrayList<>();
-        for (PostEntity postEntity: postEntityList){
+        for (PostEntity postEntity : postEntityList) {
             postDTOList.add(PostDTO.toPostDTO(postEntity));
         }
         return postDTOList;
     }
 
-    public PostDTO findById(Long id){
+    public PostDTO findById(Long id) {
         Optional<PostEntity> optionalPostEntity = postRepository.findById(id);
-        if (optionalPostEntity.isPresent()){
+        if (optionalPostEntity.isPresent()) {
             PostEntity postEntity = optionalPostEntity.get();
             PostDTO postDTO = PostDTO.toPostDTO(postEntity);
             return postDTO;
@@ -52,7 +59,7 @@ public class PostService {
     }
 
     public Page<PostDTO> paging(Pageable pageable) {
-        int page = pageable.getPageNumber()-1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
+        int page = pageable.getPageNumber() - 1; //0부터 시작하나 유저에겐 헷갈릴 수 있으므로 -1 처리
 
         int pageLimit = 4; // 한 페이지에 보여줄 글 갯수
         //Sort.unsorted() 랜덤하게 될지 확인해봐야
@@ -70,7 +77,7 @@ public class PostService {
         List<PostEntity> postEntityList = postRepository.findByMemberId(memberId);
         List<PostDTO> postDTOList = new ArrayList<>();
 
-        for (PostEntity postEntity: postEntityList){
+        for (PostEntity postEntity : postEntityList) {
             postDTOList.add(PostDTO.toPostDTO(postEntity));
         }
 
@@ -83,7 +90,7 @@ public class PostService {
         return postDTOPage;
     }
 
-    public Page<PostDTO> randomizePosts(Pageable pageable, Long memberId){
+    public Page<PostDTO> randomizePosts(Pageable pageable, Long memberId) {
         Page<PostEntity> postEntityList = postRepository.randomizePosts(pageable, memberId);
         Page<PostDTO> postDTORandomPage = EntityToDtoConverter.convert(postEntityList, pageable);
 
