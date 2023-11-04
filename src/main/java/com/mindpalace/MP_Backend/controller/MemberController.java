@@ -11,8 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
@@ -37,9 +39,9 @@ public class MemberController {
     //로그인 요청
     @PostMapping("/member/login")
     @ApiOperation(value = "로그인", response = LoginResponseDTO.class)
-    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO, HttpSession session
-    ) {
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO, HttpSession session) throws AuthenticationException {
         LoginResponseDTO loginResult = memberService.login(loginRequestDTO);
+
         if (loginResult != null) {
             //로그인 성공
             Long memberId = loginResult.getId();
@@ -76,8 +78,13 @@ public class MemberController {
     //회원가입 요청
     @PostMapping("/member/save")
     @ApiOperation(value = "회원가입", response = ErrorResponse.class)
-    public Map<String, String> save(@RequestBody @Valid MemberDTO memberDTO) {
-        return Map.ofEntries();
+    public ResponseEntity<Map<String, String>> save(@RequestBody @Valid MemberDTO memberDTO) {
+        try {
+            memberService.save(memberDTO);
+            return ResponseEntity.ok(Map.ofEntries(Map.entry("message", "회원가입 성공")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.ofEntries());
+        }
     }
 
     //이메일 중복 확인

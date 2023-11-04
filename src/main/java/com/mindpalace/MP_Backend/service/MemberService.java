@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,8 @@ public class MemberService {
         memberRepository.save(memberEntity); // 이 메서드 이름은 save밖에 되지 않는다.
     }
 
-    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws AuthenticationException {
+
         /*
             1. 회원이 입력한 이메일로 DB에서 조회
             2. DB에서 조회한 비밀번호와 사용자가 입력한 비밀번호가 일치하는지 판단
@@ -45,12 +47,12 @@ public class MemberService {
             } else {
                 // 비밀번호 불일치(로그인 실패)
                 System.out.println("로그인 실패");
-                return null;
+                throw new AuthenticationException("잘못된 이메일 혹은 비밀번호를 입력하셨습니다");
             }
         } else {
             //조회 결과가 없다(해당 이메일을 가진 회원 정보가 없다)
             System.out.println("해당 이메일이 존재하지 않는다.");
-            return null;
+            throw new AuthenticationException("잘못된 이메일 혹은 비밀번호를 입력하셨습니다");
         }
     }
 
