@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -37,7 +36,7 @@ public class PostEntity extends TimeEntity {
     private int fileAttached; // 1 or 0
 
     @Column
-    @NotBlank(message = "멤버 ID는 필수 입력 값입니다")
+    @NotNull(message = "멤버 ID는 필수 입력 값입니다")
     private Long memberId;
 
     @Builder

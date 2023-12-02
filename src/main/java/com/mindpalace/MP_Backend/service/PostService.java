@@ -29,7 +29,7 @@ public class PostService {
                 .backgroundImage(postCreateDTO.getBackgroundImage())
                 .text(postCreateDTO.getText())
                 .videoId(postCreateDTO.getVideoId())
-                .memberId(postCreateDTO.getMemberId())
+                .memberId(Long.valueOf(postCreateDTO.getMemberId()))
                 .build();
         postRepository.save(postEntity);
     }
