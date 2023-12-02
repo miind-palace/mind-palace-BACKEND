@@ -1,6 +1,6 @@
 package com.mindpalace.MP_Backend.controller;
 
-import com.mindpalace.MP_Backend.dto.EmailAuthRequestDTO;
+import com.mindpalace.MP_Backend.model.dto.EmailAuthRequestDTO;
 import com.mindpalace.MP_Backend.service.EmailService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;

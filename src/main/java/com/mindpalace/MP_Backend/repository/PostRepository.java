@@ -1,7 +1,6 @@
 package com.mindpalace.MP_Backend.repository;
 
-import com.mindpalace.MP_Backend.dto.PostDTO;
-import com.mindpalace.MP_Backend.entity.PostEntity;
+import com.mindpalace.MP_Backend.model.entity.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

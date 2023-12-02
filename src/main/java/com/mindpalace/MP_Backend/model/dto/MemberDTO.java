@@ -1,9 +1,8 @@
-package com.mindpalace.MP_Backend.dto;
+package com.mindpalace.MP_Backend.model.dto;
 
-import com.mindpalace.MP_Backend.entity.MemberEntity;
+import com.mindpalace.MP_Backend.model.entity.MemberEntity;
 import lombok.*;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
