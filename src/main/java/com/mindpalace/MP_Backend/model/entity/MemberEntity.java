@@ -1,7 +1,9 @@
-package com.mindpalace.MP_Backend.entity;
+package com.mindpalace.MP_Backend.model.entity;
 
-import com.mindpalace.MP_Backend.dto.MemberDTO;
+import com.mindpalace.MP_Backend.model.dto.MemberDTO;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
 @Table(name = "mp_member")
 public class MemberEntity {
     @Id
@@ -37,12 +40,12 @@ public class MemberEntity {
     @NotBlank(message = "이름은 필수 입력 값입니다")
     private String memberName;
 
-    public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
-        memberEntity.setMemberName(memberDTO.getMemberName());
-        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
-        return memberEntity;
+    @Builder
+    public MemberEntity(Long id, String memberEmail, String memberPassword, String memberName) {
+        this.id = id;
+        this.memberEmail = memberEmail;
+        this.memberPassword = memberPassword;
+        this.memberName = memberName;
     }
 
     public static MemberEntity toUpdateMemberEntity(MemberDTO memberDTO) {
