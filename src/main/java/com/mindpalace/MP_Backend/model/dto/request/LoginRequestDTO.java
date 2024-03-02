@@ -1,6 +1,7 @@
 package com.mindpalace.MP_Backend.model.dto.request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @ToString
+@NoArgsConstructor
 public class LoginRequestDTO {
     @NotBlank(message = "이메일은 필수 입력 값입니다")
     @Email(message = "이메일 형식에 맞지 않습니다")
